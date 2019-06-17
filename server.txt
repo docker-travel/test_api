@@ -3,11 +3,8 @@ app = Flask(__name__)
 import docker
 import requests
 import json
-import os
 from flask import jsonify
 from flask import Response
-import time,datetime
-
 # client = docker.from_env()
 # client = docker.DockerClient(base_url='tcp://106.104.114.80:2375')
 # client = docker.DockerClient(base_url='tcp://106.104.114.80:2375')
@@ -42,49 +39,13 @@ def initnode():
     # return 'The initnode json page'
     # Output: {u'age': 23, u'name': u'Peng Shuang', u'location': u'China'}
     # print data
-    
-
-    create_docker_config(data)
     print(user,id,email,pw,name)
     return jsonify(data)
 
 
 
 
-def create_docker_config(data):
-    
-    docker_data = {
-    	"Labels": {
-    	    "email": data["USER_EMAIL"],
-            "user": data["USER_NAME"],
-            "id": data["NODE_USER_ID"],
-            "pw": data["NODE_USER_PASSWORD"],
-            "name": data["NODE_NAME"]
-    	},
-    	"Image": "gotechnies/alpine-ssh",
-    	"HostConfig": {
-    		"PortBindings": {
-    			"22/tcp": [
-    				{ "HostPort": "2222" }
-    			],
-    			"2375/tcp": [
-    			    { "HostPost": "4444" }
-    			]
-    		}	
-    	}
-    }
-    
-    r = requests.post('http://13.78.29.239:2375/containers/create?name=test_container_'+data["NODE_NAME"] +str(int(time.mktime(datetime.datetime.today().timetuple()))),json=docker_data)
-    return json.dumps(docker_data)
 
-
-# print(create_docker_config({
-#   "USER_NAME": "fixiabis",
-#   "USER_EMAIL": "fixiabis@gmail.com",
-#   "NODE_USER_ID": "hash_id",
-#   "NODE_USER_PASSWORD": "password",
-#   "NODE_NAME": "node"
-# }))
 def mail():
     # request.json 只能够接受方法为POST、Body为raw，header 内容为 application/json类型的数据：对应图1
     # json.loads(request.dada) 能够同时接受方法为POST、Body为 raw类型的 Text
@@ -198,12 +159,12 @@ def show_post(post_id):
     # show the post with the given id, the id is an integer
     return 'Post %s' % post_id
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         do_the_login()
-#     else:
-#         show_the_login_form()
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        do_the_login()
+    else:
+        show_the_login_form()
 
 
 
