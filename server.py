@@ -45,7 +45,7 @@ def initnode():
     
 
     create_docker_config(data)
-    mail(data)
+    # mail(data)
     print(user,id,email,pw,name)
     return jsonify(data)
 
