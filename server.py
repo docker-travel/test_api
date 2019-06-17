@@ -45,6 +45,7 @@ def initnode():
     
 
     create_docker_config(data)
+    mail(data)
     print(user,id,email,pw,name)
     return jsonify(data)
 
@@ -75,7 +76,6 @@ def create_docker_config(data):
     }
     
     r = requests.post('http://13.78.29.239:2375/containers/create?name=test_container_'+data["NODE_NAME"] +str(int(time.mktime(datetime.datetime.today().timetuple()))),json=docker_data)
-    mail(data)
     return json.dumps(docker_data)
 
 
