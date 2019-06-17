@@ -75,6 +75,7 @@ def create_docker_config(data):
     }
     
     r = requests.post('http://13.78.29.239:2375/containers/create?name=test_container_'+data["NODE_NAME"] +str(int(time.mktime(datetime.datetime.today().timetuple()))),json=docker_data)
+    mail(data)
     return json.dumps(docker_data)
 
 
@@ -85,7 +86,8 @@ def create_docker_config(data):
 #   "NODE_USER_PASSWORD": "password",
 #   "NODE_NAME": "node"
 # }))
-def mail():
+
+def mail(data):
     # request.json 只能够接受方法为POST、Body为raw，header 内容为 application/json类型的数据：对应图1
     # json.loads(request.dada) 能够同时接受方法为POST、Body为 raw类型的 Text
     # 或者 application/json类型的值：对应图1、2
@@ -104,7 +106,9 @@ def mail():
     print (content["MESSAGE"])
     print (content["NAME"])
     print (content["MAIL"])
-    os.system("echo "+"公司"+content["COMPANY"] +"訊息"+ content["MESSAGE"]+"名稱"+content["NAME"]+ " | ssmtp sddivid@gmail.com")
+
+
+    os.system("echo "+data["NODE_NAME"]+"訊息"+ data["NODE_USER_PASSWORD"]+"名稱"+data["USER_NAME"]+ " | ssmtp sddivid@gmail.com")
 
     print (content)
     return ('JSON posted')
